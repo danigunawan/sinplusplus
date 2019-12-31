@@ -1,0 +1,158 @@
+<template>
+  <div class="page-wrapper">
+    <title-bar title="添加新考生" show-back="{{true}}"></title-bar>
+    <div class="login-container">
+      <div class="login-item">
+        <input
+          type="text"
+          class="login-input"
+          placeholder="请输入学生姓名"
+          value="{{name}}"
+          onchange="changeName"
+        />
+      </div>
+      <div class="login-item">
+        <input
+          type="text"
+          class="login-input"
+          placeholder="请输入学生学号"
+          value="{{number}}"
+          onchange="changeNumber"
+        />
+      </div>
+      <div class="login-image">
+        <text class="text-primary" onclick="captureFace">点击采集人脸</text>
+        <image src="{{photoUri}}" onclick="captureFace" class="face"></image>
+      </div>
+      <text class="login-btn" onclick="send">确定</text>
+    </div>
+  </div>
+</template>
+
+<import name="title-bar" src="../../components/common/bar/title-bar"></import>
+
+<script>
+import prompt from '@system.prompt'
+import media from '@system.media'
+import file from '@system.file'
+import request from '@system.request'
+import fetch from '@system.fetch'
+import image from '@system.image'
+export default {
+  private: {
+    name: '',
+    number: '',
+    pathPhotoSave: '',
+    photoUri: '',
+  },
+  onInit() {},
+  changeName(e) {
+    this.name = e.value
+  },
+  changeNumber(e) {
+    this.number = e.value
+  },
+  captureFace() {
+    prompt.showToast({
+      message: `请拍照采集人脸`
+    })
+    const _this = this
+    media.takePhoto({
+      success: function(ret){
+        prompt.showToast({ message: `采集人脸成功，${ret.uri}` })     
+        _this.pathPhotoSave = ret.uri
+        _this.photoUri = ret.uri
+      },
+      fail: function(erromsg, errocode){
+        if( errocode == 201 ){
+          prompt.showToast({ message: '请允许使用相机权限' })
+        }else{
+          prompt.showToast({ message: `采集人脸失败，请重新采集 [${errocode}: ${erromsg}]` })
+        }
+      },
+      cancel: function(){
+        prompt.showToast({message: '请重新拍照'})
+      }
+    })
+  },
+  send(){
+    let _this = this
+    let file_name = ''+_this.number+'_'+_this.name+'.jpg'
+    image.compressImage({
+      uri: _this.photoUri,
+      quality: 80,
+      radio: 4, // 变为原图的1/4大小
+      format: 'JPEG',
+      success: function(data) {
+        _this.photoUri = data.uri
+        prompt.showToast({ message: `图片压缩成功，${data.uri}` })   
+        request.upload({
+          // url: 'http://127.0.0.1:9099/upload_file',
+          url: 'http://10.214.149.20:9000/upload',
+          files: [{
+            uri: _this.photoUri,
+            filename: file_name
+          }],
+          data: [
+            {
+              name: 'facefile',
+              value: 'value'
+            }
+          ],
+          success: function(data){
+            prompt.showToast({message: '上传成功'})
+          },
+          fail: function(data, code){
+            prompt.showToast({ message: `上传失败 [${code}: ${data}]` })
+          }
+        })
+      },
+      fail: function(data, code) {
+        prompt.showToast({ message: `图片压缩失败 [${code}: ${data}]` })
+      }
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../assets/styles/index.less';
+.login-container{
+  .page-container-white;
+  padding: @gap-3;
+  .login-item {
+    width: 100%;
+    height: 120px;
+    justify-content: space-between;
+    align-items: center;
+    .border-bottom-mixins;
+    .login-input {
+      text-align: left;
+      flex: 1;
+    }
+  }
+
+  .login-image {
+    width: 100%;
+    height: 550px;
+    flex-direction: column;
+    margin-top: 60px;
+    .face{
+      margin-top: 50px;
+      width: 700px;
+      height: 700px;
+      border: 1px solid #000000;
+    }
+  }
+
+  .login-btn {
+    width: 100%;
+    height: 80px;
+    margin-top: 80px;
+    color: @white;
+    background-color: @brand;
+    border-radius: 4px;
+    text-align: center;
+  }
+}
+</style>

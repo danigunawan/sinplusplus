@@ -1,0 +1,34 @@
+{
+  "name": "sin",
+  "version": "1.0.0",
+  "subversion": {
+    "toolkit": "0.4.2"
+  },
+  "description": "考场签到系统",
+  "scripts": {
+    "build": "hap build",
+    "release": "hap release",
+    "server": "hap server",
+    "watch": "hap watch"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint-plugin-hybrid": "0.0.5",
+    "apex-ui": "latest",
+    "concurrently": "^4.1.0",
+    "eslint": "^5.16.0",
+    "hap-toolkit": "^0.4.2",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "onchange": "^5.2.0",
+    "prettier": "^1.15.3",
+    "prettier-plugin-quickapp": "^0.1.0"
+  },
+  "browserslist": [
+    "chrome 65"
+  ],
+  "keywords": [
+    "快应用",
+    "考场签到"
+  ]
+}

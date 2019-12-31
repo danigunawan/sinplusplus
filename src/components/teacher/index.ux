@@ -1,0 +1,109 @@
+<template>
+  <div class="page-wrapper">
+    <title-bar title="考场现场信息" show-back="{{false}}" show-add-student="{{false}}"></title-bar>
+    <div class="teacher-container">
+      <div class="video-container">
+        <web src="{{web_url}}" class="web-container"></web>
+      </div>
+      <div class='captured-container'>
+        <image src="{{img_uri}}" ></image>
+      </div>
+      <div class="btn-container">
+          <text class="login-btn" onclick="openCamera">查看现场信息</text>
+          <text class="login-btn" onclick="getCaptured">获取实时已识别图像</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<import name="title-bar" src="../../components/common/bar/title-bar"></import>
+
+<script>
+import prompt from '@system.prompt'
+import fetch from '@system.fetch'
+import request from '@system.request'
+export default {
+  data: {
+    web_url: '',
+    img_uri: '',
+    captured_url: 'http://10.214.149.20:9000/capturedimg',
+    captured_img: 'http://10.214.149.20:9000/images/captured.png',
+    fetch_url: 'http://10.214.149.20:9000/capture',
+    current_pic: 'internal://files/image/currentpic.jpg',
+    token: '',
+    students: []
+  },
+  onInit() {
+    let _this = this
+    _this.web_url = 'https://open.ys7.com/ezopen/h5/iframe?url=ezopen://open.ys7.com/D96295484/1.hd.live&autoplay=1&accessToken=at.3xq7s0le69oko8ud1w5evd3h28wbrnq4-5mlvfuvezm-1qa34t3-nmukflka6'
+    prompt.showToast({ message: '正在直播' })
+  },
+  openCamera(){
+    let _this = this
+    _this.web_url = 'https://open.ys7.com/ezopen/h5/iframe?url=ezopen://open.ys7.com/D96295484/1.hd.live&autoplay=1&accessToken=at.3xq7s0le69oko8ud1w5evd3h28wbrnq4-5mlvfuvezm-1qa34t3-nmukflka6'
+    prompt.showToast({ message: '正在直播' })
+  },
+  getInfo(){
+    let _this = this
+    _this.img_uri = ''
+    fetch.fetch({
+      url: _this.fetch_url,
+      responseType: 'json',
+      success: function(ret){
+        let info = JSON.stringify(ret.data.msg)
+        _this.students = info
+        _this.img_uri = _this.captured_img+'?time='+(new Date().getTime())
+        prompt.showToast({message: `获取信息成功，${info}`})
+      },
+      fail: function(data, code){
+        prompt.showToast({message: `获取信息失败[${data}:${code}`})
+      }
+    })
+  },
+  getCaptured(){
+    let _this = this
+    _this.getInfo()
+  }
+}
+</script>
+
+
+<style lang="less">
+@import '../../assets/styles/index.less';
+.teacher-container{
+  .page-container-white;
+  padding: @gap-3;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  .video-container{
+    border: 1px solid #000000;
+    .web-container{
+      width: 100%;
+      height: 460px;
+    }
+  }
+  .captured-container{
+    border: 1px solid #000000;
+    width: 100%;
+    margin-top: 20px;
+    height: 400px;
+  }
+  .btn-container{
+    margin-top: 10px;
+    width: 100%;
+    flex-direction: row;
+    justify-content:space-around;
+    align-items: center;
+    .login-btn {
+      width: 40%;
+      height: 80px;
+      margin-top: 20px;
+      color: @white;
+      background-color: @brand;
+      border-radius: 4px;
+      text-align: center;
+    }
+  }
+}
+</style>

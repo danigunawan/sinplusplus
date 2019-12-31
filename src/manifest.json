@@ -1,0 +1,104 @@
+{
+  "package": "com.sin.demo",
+  "name": "考场签到系统",
+  "versionName": "1.1.6",
+  "versionCode": "3",
+  "minPlatformVersion": "1040",
+  "icon": "/Common/logo.png",
+  "features": [
+    { "name": "system.prompt" },
+    { "name": "system.websocketfactory" },
+    { "name": "system.router" },
+    { "name": "system.request" },
+    { "name": "system.media" },
+    { "name": "system.shortcut" },
+    { "name": "system.fetch" },
+    { "name": "system.webview" },
+    { "name": "system.file" },
+    { "name": "system.fetch" },
+    { "name": "system.storage"}
+  ],
+  "permissions": [
+    {
+      "origin": "*"
+    }
+  ],
+  "config": {
+    "logLevel": "debug",
+    "designWidth":800 ,
+    "background": {
+      "features":[
+        "system.audio",
+        "system.record",
+        "system.request",
+        "system.geolocation"
+      ]
+     } 
+  },
+  "router": {
+    "entry": "pages/main",
+    "pages": {
+      "pages/main": {
+        "component": "index"
+      },
+      "pages/student":{
+        "component": "index"
+      },
+      "pages/info": {
+        "component": "index"
+      },
+      "pages/test": {
+        "component":"index"
+      },
+      "Home": {
+        "component": "index"
+      },
+      "tab2": {
+        "component": "tab2"
+      },
+      "DetailView": {
+        "component": "index"
+      },
+      "About": {
+        "component": "index"
+      },
+      "true": {
+        "component": "index"
+      },
+      "false": {
+        "component": "index"
+      }
+    },
+    "widgets": {
+      "CardDemo": {
+        "name": "CardDemo",
+        "description": "快应用卡片展示",
+        "component": "index",
+        "path": "/CardDemo",
+        "minPlatformVersion": 1032,
+        "targetManufactorys": [
+          "xiaomi"
+        ],
+        "features": []
+      }
+    }
+  },
+  "display": {
+    "titleBar": false,
+    "titleBarBackgroundColor": "#f2f2f2",
+    "titleBarTextColor": "#333333",
+    "menu": false,
+    "pages": {
+      "Home": {
+        "titleBarText": "考试签到系统",
+        "menu": false
+      },
+      "DetailView": {
+        "titleBarText": "详情页"
+      },
+      "About": {
+        "menu": false
+      }
+    }
+  }
+}

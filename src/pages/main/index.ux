@@ -1,0 +1,69 @@
+<template>
+  <div class="page-wrapper">
+    <main-tabs tab-list="{{tabList}}" selected-tab="{{selectedTab}}" onchange-tab="changeTab">
+      <teacher if="{{selectedTab === 0}}"></teacher>
+      <student if="{{selectedTab === 1}}"></student>
+      <info if="{{selectedTab === 2}}"></info>
+      <div><me if="{{selectedTab === 3}}"></me></div>
+    </main-tabs>
+  </div>
+</template>
+
+<import name="main-tabs" src="../../components/common/tab/main-tabs"></import>
+<import name="teacher" src="../../components/teacher"></import>
+<import name="student" src="../../components/student"></import>
+<import name="info" src="../../components/info"></import>
+<import name="me" src="../../components/me"></import>
+
+<script>
+export default {
+  protected: {
+    logined: false
+  },
+  private: {
+    tabList: [
+      {
+        title: '老师',
+        icon: '\ue642'
+      },
+      {
+        title: '学生',
+        icon: '\ue61b'
+      },
+      {
+        title: '信息',
+        icon: '\ue641'
+      },
+      {
+        title: '关于',
+        icon: '\ue60b'
+      }
+    ],
+    selectedTab: 0,
+    deactivatedColor: '#707780',
+    activatedColor: ' #20a0ff',
+    timeout: null
+  },
+  onReady() {
+    // 登录后，跳转到“我”的tab
+    if (this.logined) {
+      this.changeTab({ detail: { index: 3 } })
+    }
+  },
+  /* -------------------SelfCustomEvent------------------ */
+  changeTab(e) {
+    // 过快地切换自定义的tab，可能出现布局错乱问题，用延时方式解决。
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
+    this.timeout = setTimeout(() => {
+      let index = e.detail.index || 0
+      this.selectedTab = index
+    }, 100)
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../assets/styles/index.less';
+</style>

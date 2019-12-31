@@ -1,0 +1,59 @@
+<template>
+  <div class="page-container-white">
+    <div class="logo">
+      <text class="logo-text">TEAM NAME</text>
+    </div>
+    <div class="about-container">
+      <div class="about-item"><text class="iconfont">&#xe613; {{team_name}}</text></div>
+      <div class="about-item"><text class="iconfont">&#xe614; {{app_name}}</text></div>
+      <div class="about-item"><text class="iconfont">&#xe60e; {{version}}</text></div>
+      <div class="about-item"><text class="iconfont">&#xe62f; {{release_data}}</text></div>
+      <div class="about-item"><text class="iconfont">&#xe61b; {{help}}</text></div>
+    </div>
+  </div>
+</template>
+
+<script>
+import prompt from '@system.prompt'
+export default {
+  data: {
+    team_name: '',
+    app_name: '',
+    version: '',
+    release_data: '',
+    help: ''
+  },
+  onInit(){
+    let _this = this
+    _this.team_name = 'TestDemo'
+    _this.app_name = 'Sign in'
+    _this.version = '1.0.1'
+    _this.release_data = '2019年12月30日'
+    _this.help = 'Help'
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../assets/styles/index.less';
+.logo{
+  height: 500px;
+  background-color: @brand;
+  .flex-box-mixins(column, center, center);
+  .logo-text {
+    color: @white;
+  }
+}
+.about-container{
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  .about-item{
+    width: 100%;
+    border: 1px solid #90ee90;
+    height: 120px;
+    padding: 20px;
+  }
+}
+</style>
