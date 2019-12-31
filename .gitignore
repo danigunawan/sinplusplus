@@ -1,0 +1,13 @@
+*.xml
+*.html
+*.txt
+*.ipynb
+*.iml
+
+*.png
+*.jpg
+
+*.pth
+*.npy
+
+_faces
